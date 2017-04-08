@@ -1,0 +1,30 @@
+#ryu {
+    background: url('../images/ryu.jpg') no-repeat center center;
+    background-size: cover;
+    width: 300px;
+    height: 336px;
+}
+
+#chunli {
+    background: url('../images/chunli.jpg') no-repeat center center;
+    background-size: cover;
+    width: 300px;
+    height: 336px;
+}
+#ken {
+    background: url('../images/ken.jpg') no-repeat center center;
+    background-size: cover;
+    width: 300px;
+    height: 336px;
+}
+#blanka {
+    background: url('../images/blanka.jpg') no-repeat center center;
+    background-size: cover;
+    width: 300px;
+    height: 336px;
+}
+
+
+body {
+	/*background-color: black;*/
+}
