@@ -47,7 +47,8 @@ $(document).ready(function() {
             enemyAP = eval(fighter + ".counter");
         }
     }
-    $("#atk").click(function() {
+
+    function battle() {
         var attackmulti = (chosenAP * stackCounter);
         if (enemyHP > 0) {
             enemyHP = enemyHP - attackmulti;
@@ -55,12 +56,19 @@ $(document).ready(function() {
         if (enemyHP > 0) {
             chosenHP = chosenHP - enemyAP;
         }
-
-        winCondition();
         stackCounter++;
-        console.log("multiattack is at " + attackmulti);
-        console.log("enemy HP is " + enemyHP);
-        console.log("chosen HP is " + chosenHP);
+    }
+
+    $("#atk").click(function() {
+        var attackmulti = (chosenAP * stackCounter);
+        if (enemyCounter == 1) {
+            battle();
+            winCondition();
+            console.log("multiattack is at " + attackmulti);
+            console.log("enemy HP is " + enemyHP);
+            console.log("chosen HP is " + chosenHP);
+        }
+
     });
 
     function winCondition() {
@@ -76,7 +84,6 @@ $(document).ready(function() {
             console.log(defeated);
             $("#enemyArea").empty();
         }
-        return;
     };
 
 
@@ -85,7 +92,6 @@ $(document).ready(function() {
 
     $("#ryu").click(function() {
         pickFighter("ryu");
-
 
     });
 
