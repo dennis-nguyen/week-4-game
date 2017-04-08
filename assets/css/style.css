@@ -28,3 +28,15 @@
 body {
 	/*background-color: black;*/
 }
+
+.fighters {
+    border: blue solid 2px;
+}
+
+.enemies {
+border: red solid 2px;
+}
+
+.myHero {
+    border: blue solid 2px;
+}

@@ -39,7 +39,10 @@ $(document).ready(function() {
             chosenCounter++;
             chosenHP = eval(fighter + ".hp");
             chosenAP = eval(fighter + ".ap");
+            $(".fighters").addClass("enemies");
+            $("#" + fighter).addClass("myHero");
             $("#" + fighter).off("click");
+            
         } else if (chosenCounter == 1 && enemyCounter == 0) {
             $("#" + fighter).appendTo("#enemyArea");
             enemyCounter++;
@@ -47,12 +50,10 @@ $(document).ready(function() {
             enemyAP = eval(fighter + ".counter");
         }
     }
-
+    
     function battle() {
         var attackmulti = (chosenAP * stackCounter);
-        if (enemyHP > 0) {
-            enemyHP = enemyHP - attackmulti;
-        }
+        enemyHP = enemyHP - attackmulti;
         if (enemyHP > 0) {
             chosenHP = chosenHP - enemyAP;
         }
@@ -76,13 +77,14 @@ $(document).ready(function() {
             console.log("YOU LOSE");
         } else if (enemyHP <= 0 && defeated == 2) {
             console.log("YOU WIN");
-            $("#enemyArea").empty();
+            enemyCounter--;
+            $("#enemyArea > div").appendTo("#defeatedArea");
         } else if (enemyHP <= 0) {
             console.log("Pick your next enemy");
             enemyCounter--;
             defeated++;
             console.log(defeated);
-            $("#enemyArea").empty();
+            $("#enemyArea > div").appendTo("#defeatedArea");
         }
     };
 
