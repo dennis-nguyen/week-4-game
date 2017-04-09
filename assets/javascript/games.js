@@ -104,6 +104,7 @@ $(document).ready(function() {
             $("#loseModal").modal("show");
         } else if (enemyHP <= 0 && defeated == 2) {
             $("#winModal").modal("show");
+            $(".title").text("You Won!");
             choseEnemy = false;
             resetOnEnemyDefeat();
         } else if (enemyHP <= 0) {
@@ -114,9 +115,7 @@ $(document).ready(function() {
     };
 
 
-
-
-    function applyHandlers() {
+    function applyClickHandlers() {
         $("#atk").click(function() {
             var attackmulti = (chosenAP * stackCounter);
             if (choseEnemy == true) {
@@ -140,9 +139,22 @@ $(document).ready(function() {
         $("#blanka").click(function() {
             pickFighter("blanka");
         });
+
+        $(".theme-button").on("click", function() {
+            $('#theme')[0].play();
+
+        });
+
+        $(".pause-button").on("click", function() {
+            $('#theme')[0].pause();
+        });
+
+
     }
 
-    applyHandlers();
+    applyClickHandlers();
+
+
 
 
 
