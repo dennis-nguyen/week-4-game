@@ -1,62 +1,88 @@
+var chosenHP = 0;
+var enemyHP = 0;
+var chosenAP = 0;
+var enemyAP = 0;
+var choseFighter = false;
+var choseEnemy = false;
+var stackCounter = 1;
+var defeated = 0;
+var previousSpot;
+
+var ryu = {
+    hp: 120,
+    ap: 8,
+    counter: 10
+};
+var chunli = {
+    hp: 100,
+    ap: 15,
+    counter: 5
+};
+var ken = {
+    hp: 150,
+    ap: 5,
+    counter: 20
+};
+var blanka = {
+    hp: 180,
+    ap: 4,
+    counter: 25
+};
+
 $(document).ready(function() {
-
-    var chosenHP = 0;
-    var enemyHP = 0;
-    var chosenAP = 0;
-    var enemyAP = 0;
-    var chosenCounter = 0;
-    var enemyCounter = 0;
-    var stackCounter = 1;
-    var defeated = 0;
-    var greyContainer;
-
-    var ryu = {
-        hp: 120,
-        ap: 8,
-        counter: 10
-    };
-    var chunli = {
-        hp: 100,
-        ap: 15,
-        counter: 5
-    };
-    var ken = {
-        hp: 150,
-        ap: 5,
-        counter: 20
-    };
-    var blanka = {
-        hp: 180,
-        ap: 4,
-        counter: 25
-    };
-
-
 
     // PICKS CHOSEN HERO + FIGHTER
     function pickFighter(fighter) {
-        if (chosenCounter == 0) {
+        if (choseFighter == false) {
             $("#" + fighter).appendTo("#heroArea");
-            chosenCounter++;
-            chosenHP = eval(fighter + ".hp");
-            chosenAP = eval(fighter + ".ap");
-            $(".fighters").addClass("enemies");
-            $("#" + fighter).addClass("myHero");
-            $("#" + fighter).off("click");
-            $(".title").text("Pick your opponent!");
-            $(".chosenName").text(fighter.toUpperCase());
-            $(".chosenHealth").text(chosenHP);
+            choseFighter = true;
+            updateChosenStats(fighter);
+            updateChosenText(fighter);
 
-        } else if (chosenCounter == 1 && enemyCounter == 0) {
+        } else if (choseFighter == true && choseEnemy == false) {
             $("#" + fighter).appendTo("#enemyArea");
-            enemyCounter++;
-            enemyHP = eval(fighter + ".hp");
-            enemyAP = eval(fighter + ".counter");
-            $(".enemyName").text(fighter.toUpperCase());
-            $(".enemyHealth").text(enemyHP);
-            $("#" + fighter).off("click");
-            greyContainer = "#g" + fighter;
+            choseEnemy = true;
+            updateEnemyStats(fighter);
+            updateEnemyText(fighter);
         }
+    }
+
+    function updateChosenStats(fighter) {
+        chosenHP = eval(fighter + ".hp");
+        chosenAP = eval(fighter + ".ap");
+        $(".fighters").addClass("enemies");
+        $("#" + fighter).addClass("myHero");
+        $("#" + fighter).off("click");
+    }
+
+    function updateChosenText(fighter) {
+        $(".title").text("Pick your opponent!");
+        $(".title").css("color", "red");
+        $(".chosenName").text(fighter.toUpperCase());
+        updateHealth();
+    }
+
+    function updateEnemyStats(fighter) {
+        enemyHP = eval(fighter + ".hp");
+        enemyAP = eval(fighter + ".counter");
+    }
+
+    function updateEnemyText(fighter) {
+        $(".enemyName").text(fighter.toUpperCase());
+        $("#" + fighter).off("click");
+        previousSpot = "#g" + fighter;
+        updateHealth();
+    }
+
+    function updateHealth() {
+        $(".chosenHealth").text(chosenHP);
+        $(".enemyHealth").text(enemyHP);
+    }
+
+    function resetOnEnemyDefeat() {
+        $("#enemyArea > div").appendTo(previousSpot).fadeTo("slow", 0.15);
+        $(".enemyHealth").text("HEALTH");
+        $(".enemyName").text("OPPONENT");
     }
 
     function battle() {
@@ -64,66 +90,61 @@ $(document).ready(function() {
         enemyHP = enemyHP - attackmulti;
         if (enemyHP > 0) {
             chosenHP = chosenHP - enemyAP;
+            $("#combatText").html("You just dealt " + attackmulti + " damage and received " + enemyAP + " damage!")
+        } else {
+            $("#combatText").html("You just dealt " + attackmulti + " damage")
         }
         stackCounter++;
-        $("#combatText").html("You just dealt " + attackmulti + " damage and received " + enemyAP + " damage!")
+        updateHealth();
     }
 
-    $("#atk").click(function() {
-        var attackmulti = (chosenAP * stackCounter);
-        if (enemyCounter == 1) {
-            battle();
-
-            $(".chosenHealth").text(chosenHP);
-            $(".enemyHealth").text(enemyHP);
-            winCondition();
-        }
-
-    });
 
     function winCondition() {
         if (chosenHP <= 0) {
             $("#loseModal").modal("show");
         } else if (enemyHP <= 0 && defeated == 2) {
-            console.log("YOU WIN");
             $("#winModal").modal("show");
-            enemyCounter--;
-            $("#enemyArea > div").appendTo(greyContainer).fadeTo("slow", 0.15);
-            $(".enemyHealth").text("HEALTH");
-            $(".enemyName").text("OPPONENT");
+            choseEnemy = false;
+            resetOnEnemyDefeat();
         } else if (enemyHP <= 0) {
-            console.log("Pick your next enemy");
-            enemyCounter--;
+            choseEnemy = false;
             defeated++;
-            console.log(defeated);
-            $("#enemyArea > div").appendTo(greyContainer).fadeTo("slow", 0.15);
-            $(".enemyHealth").text("HEALTH");
-            $(".enemyName").text("OPPONENT");
+            resetOnEnemyDefeat();
         }
     };
 
 
 
 
+    function applyHandlers() {
+        $("#atk").click(function() {
+            var attackmulti = (chosenAP * stackCounter);
+            if (choseEnemy == true) {
+                battle();
+                winCondition();
+            }
+        });
 
-    $("#ryu").click(function() {
-        pickFighter("ryu");
+        $("#ryu").click(function() {
+            pickFighter("ryu");
+        });
 
-    });
+        $("#ken").click(function() {
+            pickFighter("ken");
+        });
 
-    $("#ken").click(function() {
-        pickFighter("ken");
+        $("#chunli").click(function() {
+            pickFighter("chunli");
+        });
 
-    });
+        $("#blanka").click(function() {
+            pickFighter("blanka");
+        });
+    }
 
-    $("#chunli").click(function() {
-        pickFighter("chunli");
+    applyHandlers();
 
-    });
 
-    $("#blanka").click(function() {
-        pickFighter("blanka");
 
-    });
 
 });
