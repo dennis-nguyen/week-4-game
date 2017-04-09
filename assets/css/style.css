@@ -1,42 +1,91 @@
 #ryu {
     background: url('../images/ryu.jpg') no-repeat center center;
     background-size: cover;
-    width: 300px;
-    height: 336px;
+    width: 100%;
+    height: 236px;
 }
 
 #chunli {
     background: url('../images/chunli.jpg') no-repeat center center;
     background-size: cover;
-    width: 300px;
-    height: 336px;
+    width: 100%;
+    height: 236px;
 }
+
 #ken {
     background: url('../images/ken.jpg') no-repeat center center;
     background-size: cover;
-    width: 300px;
-    height: 336px;
+    width: 100%;
+    height: 236px;
 }
+
 #blanka {
     background: url('../images/blanka.jpg') no-repeat center center;
     background-size: cover;
-    width: 300px;
-    height: 336px;
+    width: 100%;
+    height: 236px;
 }
-
 
 body {
-	/*background-color: black;*/
+    min-height: 100%;
+    background-color: rgba(225, 225, 225, 0);
+    font-family: 'Gloria Hallelujah', cursive;
 }
+
+html {
+    background: url('../images/sf.jpg') no-repeat center center;
+    min-height: 100%;
+    background-size: cover;
+}
+
 
 .fighters {
     border: blue solid 2px;
 }
 
 .enemies {
-border: red solid 2px;
+    border: red solid 2px;
 }
+
 
 .myHero {
     border: blue solid 2px;
+    /* position: absolute;*/
+}
+
+
+.stageContainer {
+    height: 400px;
+    position: relative;
+    background: url('../images/stage.jpg') no-repeat center;
+    background-size: cover;
+}
+
+.chosenName,
+.enemyName {
+    color: white;
+}
+
+.enemyHealth {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    color: red;
+}
+
+.chosenHealth {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    color: red;
+}
+
+.title {
+	color: red;
+}
+
+#combatText {
+	color: red;
+	font-size: 20px;
+	font-weight: bold;
 }

@@ -8,6 +8,7 @@ $(document).ready(function() {
     var enemyCounter = 0;
     var stackCounter = 1;
     var defeated = 0;
+    var greyContainer;
 
     var ryu = {
         hp: 120,
@@ -16,7 +17,7 @@ $(document).ready(function() {
     };
     var chunli = {
         hp: 100,
-        ap: 10,
+        ap: 15,
         counter: 5
     };
     var ken = {
@@ -26,7 +27,7 @@ $(document).ready(function() {
     };
     var blanka = {
         hp: 180,
-        ap: 6,
+        ap: 4,
         counter: 25
     };
 
@@ -42,15 +43,22 @@ $(document).ready(function() {
             $(".fighters").addClass("enemies");
             $("#" + fighter).addClass("myHero");
             $("#" + fighter).off("click");
-            
+            $(".title").text("Pick your opponent!");
+            $(".chosenName").text(fighter.toUpperCase());
+            $(".chosenHealth").text(chosenHP);
+
         } else if (chosenCounter == 1 && enemyCounter == 0) {
             $("#" + fighter).appendTo("#enemyArea");
             enemyCounter++;
             enemyHP = eval(fighter + ".hp");
             enemyAP = eval(fighter + ".counter");
+            $(".enemyName").text(fighter.toUpperCase());
+            $(".enemyHealth").text(enemyHP);
+            $("#" + fighter).off("click");
+            greyContainer = "#g" + fighter;
         }
     }
-    
+
     function battle() {
         var attackmulti = (chosenAP * stackCounter);
         enemyHP = enemyHP - attackmulti;
@@ -58,33 +66,39 @@ $(document).ready(function() {
             chosenHP = chosenHP - enemyAP;
         }
         stackCounter++;
+        $("#combatText").html("You just dealt " + attackmulti + " damage and received " + enemyAP + " damage!")
     }
 
     $("#atk").click(function() {
         var attackmulti = (chosenAP * stackCounter);
         if (enemyCounter == 1) {
             battle();
+
+            $(".chosenHealth").text(chosenHP);
+            $(".enemyHealth").text(enemyHP);
             winCondition();
-            console.log("multiattack is at " + attackmulti);
-            console.log("enemy HP is " + enemyHP);
-            console.log("chosen HP is " + chosenHP);
         }
 
     });
 
     function winCondition() {
         if (chosenHP <= 0) {
-            console.log("YOU LOSE");
+            $("#loseModal").modal("show");
         } else if (enemyHP <= 0 && defeated == 2) {
             console.log("YOU WIN");
+            $("#winModal").modal("show");
             enemyCounter--;
-            $("#enemyArea > div").appendTo("#defeatedArea");
+            $("#enemyArea > div").appendTo(greyContainer).fadeTo("slow", 0.15);
+            $(".enemyHealth").text("HEALTH");
+            $(".enemyName").text("OPPONENT");
         } else if (enemyHP <= 0) {
             console.log("Pick your next enemy");
             enemyCounter--;
             defeated++;
             console.log(defeated);
-            $("#enemyArea > div").appendTo("#defeatedArea");
+            $("#enemyArea > div").appendTo(greyContainer).fadeTo("slow", 0.15);
+            $(".enemyHealth").text("HEALTH");
+            $(".enemyName").text("OPPONENT");
         }
     };
 
