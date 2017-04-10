@@ -38,7 +38,6 @@ html {
     background-size: cover;
 }
 
-
 .fighters {
     border: blue solid 2px;
 }
@@ -47,12 +46,10 @@ html {
     border: red solid 2px;
 }
 
-
 .myHero {
     border: blue solid 2px;
     /* position: absolute;*/
 }
-
 
 .stageContainer {
     height: 400px;
@@ -81,11 +78,11 @@ html {
 }
 
 .title {
-	color: blue;
+    color: blue;
 }
 
 #combatText {
-	color: red;
-	font-size: 20px;
-	font-weight: bold;
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
 }

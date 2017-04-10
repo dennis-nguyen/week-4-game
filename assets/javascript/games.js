@@ -31,7 +31,7 @@ var blanka = {
 
 $(document).ready(function() {
 
-    // PICKS CHOSEN HERO + FIGHTER
+    // PICKS CHOSEN HERO + OPPONENT
     function pickFighter(fighter) {
         if (choseFighter == false) {
             $("#" + fighter).appendTo("#heroArea");
@@ -78,13 +78,13 @@ $(document).ready(function() {
         $(".chosenHealth").text(chosenHP);
         $(".enemyHealth").text(enemyHP);
     }
-
+    // SENDS OPPONENT BACK TO THEIR ORIGINAL DIV ON DEFEAT GREYED OUT
     function resetOnEnemyDefeat() {
         $("#enemyArea > div").appendTo(previousSpot).fadeTo("slow", 0.15);
         $(".enemyHealth").text("HEALTH");
         $(".enemyName").text("OPPONENT");
     }
-
+    // DAMAGE LOGIC
     function battle() {
         var attackmulti = (chosenAP * stackCounter);
         enemyHP = enemyHP - attackmulti;
@@ -92,7 +92,7 @@ $(document).ready(function() {
             chosenHP = chosenHP - enemyAP;
             $("#combatText").html("You just dealt " + attackmulti + " damage and received " + enemyAP + " damage!")
         } else {
-            $("#combatText").html("You just dealt " + attackmulti + " damage")
+            $("#combatText").html("You just dealt " + attackmulti + " damage!")
         }
         stackCounter++;
         updateHealth();
@@ -102,6 +102,7 @@ $(document).ready(function() {
     function winCondition() {
         if (chosenHP <= 0) {
             $("#loseModal").modal("show");
+            $(".title").text("You Lose.");
         } else if (enemyHP <= 0 && defeated == 2) {
             $("#winModal").modal("show");
             $(".title").text("You Won!");
@@ -153,10 +154,5 @@ $(document).ready(function() {
     }
 
     applyClickHandlers();
-
-
-
-
-
 
 });
