@@ -7,30 +7,47 @@ var choseEnemy = false;
 var stackCounter = 1;
 var defeated = 0;
 var previousSpot;
+var char = [];
 
-var ryu = {
-    hp: 120,
-    ap: 8,
-    counter: 10
-};
-var chunli = {
-    hp: 100,
-    ap: 15,
-    counter: 5
-};
-var ken = {
-    hp: 150,
-    ap: 5,
-    counter: 20
-};
-var blanka = {
-    hp: 180,
-    ap: 4,
-    counter: 25
-};
+function Character(config) {
+    this.hp = config.hp;
+    this.ap = config.ap;
+    this.counter = config.counter;
+}
+
+var fighters = {
+    ryuConfig: {
+        name: "ryu",
+        hp: 120,
+        ap: 8,
+        counter: 10
+    },
+    chunliConfig: {
+        name: "chunli",
+        hp: 100,
+        ap: 15,
+        counter: 5
+    },
+    kenConfig: {
+        name: "ken",
+        hp: 150,
+        ap: 5,
+        counter: 20
+    },
+    blankaConfig: {
+        name: "blanka",
+        hp: 180,
+        ap: 4,
+        counter: 25
+    },
+
+}
+
+for (var fighter in fighters) {
+    char[fighters[fighter].name] = new Character(fighters[fighter]);
+}
 
 $(document).ready(function() {
-
     // PICKS CHOSEN HERO + OPPONENT
     function pickFighter(fighter) {
         if (choseFighter == false) {
@@ -48,8 +65,8 @@ $(document).ready(function() {
     }
 
     function updateChosenStats(fighter) {
-        chosenHP = eval(fighter + ".hp");
-        chosenAP = eval(fighter + ".ap");
+        chosenHP = char[fighter].hp;
+        chosenAP = char[fighter].ap;
         $(".fighters").addClass("enemies");
         $("#" + fighter).addClass("myHero");
         $("#" + fighter).off("click");
@@ -63,8 +80,8 @@ $(document).ready(function() {
     }
 
     function updateEnemyStats(fighter) {
-        enemyHP = eval(fighter + ".hp");
-        enemyAP = eval(fighter + ".counter");
+        enemyHP = char[fighter].hp;
+        enemyAP = char[fighter].ap;
     }
 
     function updateEnemyText(fighter) {
@@ -98,7 +115,6 @@ $(document).ready(function() {
         updateHealth();
     }
 
-
     function winCondition() {
         if (chosenHP <= 0) {
             $("#loseModal").modal("show");
@@ -114,7 +130,6 @@ $(document).ready(function() {
             resetOnEnemyDefeat();
         }
     };
-
 
     function applyClickHandlers() {
         $("#atk").click(function() {
@@ -149,10 +164,7 @@ $(document).ready(function() {
         $(".pause-button").on("click", function() {
             $('#theme')[0].pause();
         });
-
-
     }
-
+    
     applyClickHandlers();
-
 });
