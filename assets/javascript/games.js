@@ -7,9 +7,11 @@ var choseEnemy = false;
 var stackCounter = 1;
 var defeated = 0;
 var previousSpot;
-var char = [];
+var char = []; //Character Array
+var themeOff = true;
 
 function Character(config) {
+    this.name = config.name;
     this.hp = config.hp;
     this.ap = config.ap;
     this.counter = config.counter;
@@ -20,13 +22,13 @@ var fighters = {
         name: "ryu",
         hp: 120,
         ap: 8,
-        counter: 10
+        counter: 12
     },
     chunliConfig: {
         name: "chunli",
         hp: 100,
         ap: 15,
-        counter: 5
+        counter: 13
     },
     kenConfig: {
         name: "ken",
@@ -41,7 +43,7 @@ var fighters = {
         counter: 25
     },
 
-}
+};
 
 for (var fighter in fighters) {
     char[fighters[fighter].name] = new Character(fighters[fighter]);
@@ -50,14 +52,15 @@ for (var fighter in fighters) {
 $(document).ready(function() {
     // PICKS CHOSEN HERO + OPPONENT
     function pickFighter(fighter) {
-        if (choseFighter == false) {
-            $("#" + fighter).appendTo("#heroArea");
+        var clickedFighter = $("#" + fighter);
+        if (choseFighter === false) {
+            clickedFighter.appendTo("#heroArea");
             choseFighter = true;
             updateChosenStats(fighter);
             updateChosenText(fighter);
 
-        } else if (choseFighter == true && choseEnemy == false) {
-            $("#" + fighter).appendTo("#enemyArea");
+        } else if (choseFighter === true && choseEnemy === false) {
+            clickedFighter.appendTo("#enemyArea");
             choseEnemy = true;
             updateEnemyStats(fighter);
             updateEnemyText(fighter);
@@ -65,11 +68,12 @@ $(document).ready(function() {
     }
 
     function updateChosenStats(fighter) {
+        var clickedFighter = $("#" + fighter);
         chosenHP = char[fighter].hp;
         chosenAP = char[fighter].ap;
         $(".fighters").addClass("enemies");
-        $("#" + fighter).addClass("myHero");
-        $("#" + fighter).off("click");
+        clickedFighter.addClass("myHero");
+        clickedFighter.off("click");
     }
 
     function updateChosenText(fighter) {
@@ -81,12 +85,13 @@ $(document).ready(function() {
 
     function updateEnemyStats(fighter) {
         enemyHP = char[fighter].hp;
-        enemyAP = char[fighter].ap;
+        enemyAP = char[fighter].counter;
     }
 
     function updateEnemyText(fighter) {
+        var clickedFighter = $("#" + fighter);
         $(".enemyName").text(fighter.toUpperCase());
-        $("#" + fighter).off("click");
+        clickedFighter.off("click");
         previousSpot = "#g" + fighter;
         updateHealth();
     }
@@ -107,9 +112,9 @@ $(document).ready(function() {
         enemyHP = enemyHP - attackmulti;
         if (enemyHP > 0) {
             chosenHP = chosenHP - enemyAP;
-            $("#combatText").html("You just dealt " + attackmulti + " damage and received " + enemyAP + " damage!")
+            $("#combatText").html("You just dealt " + attackmulti + " damage and received " + enemyAP + " damage!");
         } else {
-            $("#combatText").html("You just dealt " + attackmulti + " damage!")
+            $("#combatText").html("You just dealt " + attackmulti + " damage!");
         }
         stackCounter++;
         updateHealth();
@@ -129,12 +134,24 @@ $(document).ready(function() {
             defeated++;
             resetOnEnemyDefeat();
         }
-    };
+    }
+
+    function toggleTheme() {
+        if (themeOff) {
+            $('#theme')[0].play();
+            themeOff = false;
+            $(".theme-button").attr("class", "btn btn-default btn-xs theme-button").html('<span class="glyphicon glyphicon-pause"> </span> Pause Theme');
+        } else {
+            $('#theme')[0].pause();
+            themeOff = true;
+            $(".theme-button").attr("class", "btn btn-danger btn-xs theme-button").html('<span class="glyphicon glyphicon-music"> </span> Play Theme');
+        }
+    }
 
     function applyClickHandlers() {
         $("#atk").click(function() {
             var attackmulti = (chosenAP * stackCounter);
-            if (choseEnemy == true) {
+            if (choseEnemy === true) {
                 battle();
                 winCondition();
             }
@@ -157,14 +174,10 @@ $(document).ready(function() {
         });
 
         $(".theme-button").on("click", function() {
-            $('#theme')[0].play();
-
+            toggleTheme();
         });
 
-        $(".pause-button").on("click", function() {
-            $('#theme')[0].pause();
-        });
     }
-    
+
     applyClickHandlers();
 });
