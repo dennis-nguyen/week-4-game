@@ -151,7 +151,6 @@ $(document).ready(function() {
 
     function applyClickHandlers() {
         $("#atk").click(function() {
-            var attackmulti = (chosenAP * stackCounter);
             if (choseEnemy === true) {
                 battle();
                 winCondition();
@@ -177,7 +176,6 @@ $(document).ready(function() {
         $(".theme-button").on("click", function() {
             toggleTheme();
         });
-
     }
 
     applyClickHandlers();
