@@ -20,8 +20,8 @@ function Character(config) {
 var fighters = {
     ryuConfig: {
         name: "ryu",
-        hp: 120,
-        ap: 8,
+        hp: 130,
+        ap: 10,
         counter: 12
     },
     chunliConfig: {
@@ -33,7 +33,7 @@ var fighters = {
     kenConfig: {
         name: "ken",
         hp: 150,
-        ap: 5,
+        ap: 6,
         counter: 20
     },
     blankaConfig: {
@@ -124,6 +124,7 @@ $(document).ready(function() {
         if (chosenHP <= 0) {
             $("#loseModal").modal("show");
             $(".title").text("You Lose.");
+            $("#atk").off("click");
         } else if (enemyHP <= 0 && defeated == 2) {
             $("#winModal").modal("show");
             $(".title").text("You Won!");
